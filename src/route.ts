@@ -17,7 +17,7 @@ export namespace Route {
     }
 
 
-    export class BaseRoute {
+    export class BaseRoute extends Object {
         GET = 'get';
         POST = 'post';
         DELETE = 'delete';
@@ -30,7 +30,7 @@ export namespace Route {
         }
 
         constructor() {
-
+            super();
         }
 
     }
@@ -42,12 +42,9 @@ export namespace Route {
          * 构建路由
          */
         static buildRoute(routeClass: new () => BaseRoute): RequestHandler {
-
+            var route = new routeClass();
             return (req: Request, res: Response, next: RequestHandler) => {
-                var route = new routeClass();
-                route.req = req;
-                route.res = res;
-                route.doAction(req.params.action, req.method.toLowerCase(), next).bind(route)(req, res, next);
+                route.doAction(req.params.action, req.method.toLowerCase(), next).bind({ req, res, service, GET: 'get', POST: 'post' })(req, res, next);
             }
         }
         static buildMiddle(): RequestHandler[] {
@@ -57,6 +54,5 @@ export namespace Route {
 
     }
 }
-
 
 
