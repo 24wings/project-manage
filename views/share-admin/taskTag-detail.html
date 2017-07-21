@@ -1,0 +1,46 @@
+{%extends './layout/base.html'%} {%block title%}任务详情{%endblock%} {%block content%}
+
+<div class="content-page">
+    <!-- Start content -->
+    <div class="content">
+        <div class="am-g">
+            <!-- Row start -->
+            <div class="am-u-sm-12">
+                <div class="card-box">
+
+                    <h4 class="header-title m-t-0 m-b-30">任务标签详情</h4>
+
+                    <div class="am-g">
+                        <div class="am-u-md-12">
+                            <form class="am-form am-text-sm">
+                                <div class="am-form-group">
+
+                                    <div class="am-g">
+                                        <label class="am-u-md-2 am-md-text-right am-padding-left-0" for="doc-ipt-text-1">{{taskTag.name}}</label>
+                                        <input class="am-u-md-10 form-control" placeholder="标签名字" disabled value="{{taskTag.name}}">
+
+                                    </div>
+                                </div>
+
+
+                            </form>
+
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+            <!-- Row end -->
+        </div>
+
+
+
+
+
+
+        <!-- row end -->
+
+    </div>
+</div>
+{%endblock%}
