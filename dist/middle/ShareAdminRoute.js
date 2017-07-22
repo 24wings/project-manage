@@ -10,6 +10,8 @@ class ShareAdminRoute extends route_1.Route.BaseRoute {
     }
     doAction(action, method, next) {
         switch (action) {
+            case 'login':
+                return this.GET == method ? this.loginPage : this.login;
             case 'task-list':
                 return this.taskList;
             case 'task-detail':
@@ -34,8 +36,23 @@ class ShareAdminRoute extends route_1.Route.BaseRoute {
                 return this.index;
         }
     }
+    login() {
+        let { username, password } = this.req.body;
+        if (username == 'admin' && password == '123') {
+            this.req.session.name = {
+                username,
+                password
+            };
+        }
+        else {
+            this.res.render('share-/admin', { errorMsg: '用户名或密码不正确' });
+        }
+    }
+    loginPage() {
+        this.res.render('share-admin/login');
+    }
     index(req, res) {
-        res.render(`${this.VIEWDIR}/index`);
+        res.render(`share-admin/index`);
     }
     async taskTagDelete(req, res) {
         let action = await this.service.db.taskTagModel.findByIdAndRemove(req.query._id).exec();

@@ -7,6 +7,9 @@ export class ShareAdminRoute extends Route.BaseRoute implements Route.IRoute {
     VIEWDIR = 'share-admin';
     doAction(action: string, method: string, next: RequestHandler) {
         switch (action) {
+            case 'login':
+                return this.GET == method ? this.loginPage : this.login;
+
             case 'task-list':
                 return this.taskList;
 
@@ -36,8 +39,25 @@ export class ShareAdminRoute extends Route.BaseRoute implements Route.IRoute {
 
     }
 
+    login() {
+        let { username, password } = this.req.body;
+        if (username == 'admin' && password == '123') {
+            this.req.session.name = {
+                username,
+                password
+            };
+        } else {
+            this.res.render('share-/admin', { errorMsg: '用户名或密码不正确' });
+        }
+
+    }
+    loginPage() {
+        this.res.render('share-admin/login')
+
+    }
+
     index(req: Request, res: Response) {
-        res.render(`${this.VIEWDIR}/index`);
+        res.render(`share-admin/index`);
     }
     async taskTagDelete(req: Request, res: Response) {
         let action = await this.service.db.taskTagModel.findByIdAndRemove(req.query._id).exec();

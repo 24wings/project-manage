@@ -2,14 +2,14 @@ var gulp = require("gulp");
 var tsc = require("gulp-typescript-compiler");
 var ts = require('gulp-typescript');
 var nodemon = require("gulp-nodemon");
-/** gulp-bootstrap  */
+var sass = require('gulp-sass');
 
 var gulp = require('gulp');
 
 
 var tsProject = ts.createProject('./tsconfig.json');
 
-gulp.task("default", ["compile", "watch", "nodemon"]);
+gulp.task("default", ["compile", "watch", "nodemon", 'sass', 'sass:watch']);
 
 
 gulp.task("watch", function() {
@@ -33,4 +33,16 @@ gulp.task("nodemon", function() {
         }
 
     });
+});
+
+
+
+gulp.task('sass', function() {
+    return gulp.src('./sass/**/*.scss')
+        .pipe(sass().on('error', sass.logError))
+        .pipe(gulp.dest('./public/css'));
+});
+
+gulp.task('sass:watch', function() {
+    gulp.watch('./sass/**/*.scss', ['sass']);
 });

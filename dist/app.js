@@ -41,7 +41,14 @@ app.use(middleware_1.Middleware.MiddlewareBuilder.buildMiddleware(middle_1.Commo
 }))
     .use('/wechat/:action', route_1.Route.RouteBuilder.buildRoute(middle_1.WechatRoute))
     .use('/api/:action', route_1.Route.RouteBuilder.buildRoute(middle_1.ApiRoute))
-    .use('/share-admin/:action', route_1.Route.RouteBuilder.buildRoute(middle_1.ShareAdminRoute))
+    .use('/share-admin/:action', (req, res, next) => {
+    if (req.session.admin || req.baseUrl == '/share-admin/login') {
+        next();
+    }
+    else {
+        res.redirect('/share-admin/login');
+    }
+}, route_1.Route.RouteBuilder.buildRoute(middle_1.ShareAdminRoute))
     .use((err, req, res, next) => {
     // set locals, only providing error in development
     res.locals.message = err.message;

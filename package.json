@@ -37,6 +37,7 @@
   "devDependencies": {
     "gulp": "^3.9.1",
     "gulp-nodemon": "^2.2.1",
+    "gulp-sass": "^3.1.0",
     "gulp-typescript": "^3.2.0",
     "gulp-typescript-compiler": "^1.0.1",
     "typescript": "^2.4.1"
