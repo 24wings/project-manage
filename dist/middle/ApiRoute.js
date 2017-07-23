@@ -10,6 +10,9 @@ class ApiRoute extends route_1.Route.BaseRoute {
                 return this.uploadBase64;
         }
     }
+    before() { }
+    after() {
+    }
     constructor() {
         super();
     }

@@ -1,0 +1,149 @@
+{%extends '../layout/pm-admin/layout.html'%} {%block content%}
+<div class="content-wrapper" style="min-height: 946px;">
+    <div style="padding: 20px 30px; background: rgb(243, 156, 18); z-index: 999999; font-size: 16px; font-weight: 600;"><a class="pull-right" href="#" data-toggle="tooltip" data-placement="left" title="" style="color: rgb(255, 255, 255); font-size: 20px;" data-original-title="Never show me this again!">×</a><a href="https://themequarry.com" style="color: rgba(255, 255, 255, 0.9); display: inline-block; margin-right: 10px; text-decoration: none;">Ready to sell your theme? Submit your theme to our new marketplace now and let over 200k visitors see it!</a>
+        <a class="btn btn-default btn-sm" href="https://themequarry.com" style="margin-top: -5px; border: 0px; box-shadow: none; color: rgb(243, 156, 18); font-weight: 600; background: rgb(255, 255, 255);">Let's Do It!</a>
+    </div>
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            创建项目
+            <small></small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
+            <li><a href="#">Forms</a></li>
+            <li class="active">General Elements</li>
+        </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <!-- left column -->
+            <div class="col-md-12">
+                <!-- general form elements -->
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">创建项目</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <!-- form start -->
+                    <form role="form" method="POST">
+                        <div class="box-body">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">项目名称</label>
+                                <input type="text" class="form-control" id="exampleInputEmail1" name="name" placeholder="项目名称">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">描述</label>
+                                <textarea id="input1/(\w+)/\u\1/g" class="form-control" rows="3" name="summary" required="required"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>参与人员</label>
+                            <select name="employees" 　 class="form-control select2" multiple="multiple" data-placeholder="添加参与员工" style="width: 100%;">
+                                {%for employee in employees%}
+                                <option value="{{employee._id.toString()}}">{{employee.truename}}</option>
+                                {%endfor%}
+                                </select>
+
+                        </div>
+
+                        <div class="box-footer">
+                            <button type="submit" class="btn btn-primary">确认</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.box -->
+
+
+
+                <!-- /.box -->
+
+            </div>
+            <!--/.col (left) -->
+
+            <!--/.col (right) -->
+        </div>
+
+    </section>
+    <!-- /.content -->
+</div>
+{%endblock%} {%block script%}
+
+
+<script>
+    //Initialize Select2 Elements
+    $('.select2').select2().on('select2:select', function() {
+        console.log($('.select2 option'));
+    });
+    //Datemask dd/mm/yyyy
+    $('#datemask').inputmask('dd/mm/yyyy', {
+            'placeholder': 'dd/mm/yyyy'
+        })
+        //Datemask2 mm/dd/yyyy
+    $('#datemask2').inputmask('mm/dd/yyyy', {
+            'placeholder': 'mm/dd/yyyy'
+        })
+        //Money Euro
+    $('[data-mask]').inputmask()
+
+    //Date range picker
+    $('#reservation').daterangepicker()
+        //Date range picker with time picker
+    $('#reservationtime').daterangepicker({
+            timePicker: true,
+            timePickerIncrement: 30,
+            format: 'MM/DD/YYYY h:mm A'
+        })
+        //Date range as a button
+    $('#daterange-btn').daterangepicker({
+            ranges: {
+                'Today': [moment(), moment()],
+                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                'This Month': [moment().startOf('month'), moment().endOf('month')],
+                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+            },
+            startDate: moment().subtract(29, 'days'),
+            endDate: moment()
+        },
+        function(start, end) {
+            $('#daterange-btn span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'))
+        }
+    )
+
+    //Date picker
+    $('#datepicker').datepicker({
+        autoclose: true
+    })
+
+    //iCheck for checkbox and radio inputs
+    $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+            checkboxClass: 'icheckbox_minimal-blue',
+            radioClass: 'iradio_minimal-blue'
+        })
+        //Red color scheme for iCheck
+    $('input[type="checkbox"].minimal-red, input[type="radio"].minimal-red').iCheck({
+            checkboxClass: 'icheckbox_minimal-red',
+            radioClass: 'iradio_minimal-red'
+        })
+        //Flat red color scheme for iCheck
+    $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
+        checkboxClass: 'icheckbox_flat-green',
+        radioClass: 'iradio_flat-green'
+    })
+
+    //Colorpicker
+    $('.my-colorpicker1').colorpicker()
+        //color picker with addon
+    $('.my-colorpicker2').colorpicker()
+
+    //Timepicker
+    $('.timepicker').timepicker({
+        showInputs: false
+    })
+</script>
+{%endblock%}

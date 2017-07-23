@@ -10,15 +10,11 @@ import nunjucks = require('nunjucks');
 import service = require('./services');
 import { Route } from './route';
 import { Middleware } from './middleware';
-
 import moment = require('moment');
-
-import { CommonMiddle, WechatRoute, ApiRoute, ShareAdminRoute } from './middle';
-
+import { CommonMiddle, ProjectManageAdminRoute, ApiRoute, ProjectUserRoute } from './middle';
 
 
 var app = express();
-
 var njk = nunjucks.configure(path.resolve(__dirname, '../views'), { // 设置模板文件的目录，为views
     autoescape: true,
     express: app,
@@ -45,27 +41,12 @@ njk.addFilter('myFault', function (ok: boolean) {
 // app.set('trust proxy', 1) // trust first proxy 
 
 app.use(Middleware.MiddlewareBuilder.buildMiddleware(CommonMiddle))
-
+    .use('/node_modules', express.static(path.resolve(__dirname, '../node_modules')))
     .set('view engine', 'html')
-    .all('/', service.wechat.wechat(service.CONFIG.wechat, (req, res, next) => {
-        var parent = req.query.parent;
-        console.log(req.query)
-        var url = service.wechat.client.getAuthorizeURL(`${service.CONFIG.domain}/wechat/oauth` + (parent ? '?parent=' + parent : ''), '', 'snsapi_userinfo');
-        res.reply({ content: url, type: 'text' });
-    }))
-    .use('/wechat/:action', Route.RouteBuilder.buildRoute(WechatRoute))
+    .all('/', (req, res) => res.redirect('/pm/index'))
+    .use('/pm/:action', Route.RouteBuilder.buildRoute(ProjectUserRoute))
     .use('/api/:action', Route.RouteBuilder.buildRoute(ApiRoute))
-    .use('/share-admin/:action', (req, res, next) => {
-
-
-        if (req.session.admin || req.baseUrl == '/share-admin/login') {
-
-            next()
-        } else {
-            res.redirect('/share-admin/login');
-        }
-
-    }, Route.RouteBuilder.buildRoute(ShareAdminRoute))
+    .use('/pm-admin/:action', Route.RouteBuilder.buildRoute(ProjectManageAdminRoute))
     // 错误处理
     .use((err, req, res, next) => {
         // set locals, only providing error in development

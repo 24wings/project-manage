@@ -2,7 +2,7 @@ import path = require('path');
 import fs = require('fs');
 
 export const CONFIG = {
-    port: 80,
+    port: 3000,
     oldAuth: 'shop.xxbuy.net',
     uploadDir: path.resolve(__dirname, '../../public/upload'),
     newAuth: '',
@@ -22,7 +22,7 @@ export const CONFIG = {
         appId: 'wx8bdcc982b8477839',
         mchId: "1447627402",
         notifyUrl: "http://wq8.youqulexiang.com/payment/",
-        pfx: fs.readFileSync(path.resolve(__dirname, '../../temp/apiclient_cert.p12'))
+        // pfx: fs.readFileSync(path.resolve(__dirname, '../../temp/apiclient_cert.p12'))
     },
     jssdk: {
         "wechatToken": "sbnEzLbl77Gqnovb7Gqljj7TqYbRPprR",
@@ -31,5 +31,5 @@ export const CONFIG = {
     },
     // wechatClient: ''
     // 静态文件服务器
-    publicDirs: [path.resolve(__dirname, '../../public')]
+    publicDirs: [path.resolve(__dirname, '../../public'), path.resolve(__dirname, '../../node_modules')]
 }

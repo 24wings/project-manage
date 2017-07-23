@@ -9,6 +9,10 @@ export class ApiRoute extends Route.BaseRoute implements Route.IRoute {
                 return this.uploadBase64
         }
     }
+    before() { }
+    after() {
+
+    }
     constructor() {
         super();
     }

@@ -1,9 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const path = require("path");
-const fs = require("fs");
 exports.CONFIG = {
-    port: 80,
+    port: 3000,
     oldAuth: 'shop.xxbuy.net',
     uploadDir: path.resolve(__dirname, '../../public/upload'),
     newAuth: '',
@@ -23,7 +22,6 @@ exports.CONFIG = {
         appId: 'wx8bdcc982b8477839',
         mchId: "1447627402",
         notifyUrl: "http://wq8.youqulexiang.com/payment/",
-        pfx: fs.readFileSync(path.resolve(__dirname, '../../temp/apiclient_cert.p12'))
     },
     jssdk: {
         "wechatToken": "sbnEzLbl77Gqnovb7Gqljj7TqYbRPprR",
@@ -32,5 +30,5 @@ exports.CONFIG = {
     },
     // wechatClient: ''
     // 静态文件服务器
-    publicDirs: [path.resolve(__dirname, '../../public')]
+    publicDirs: [path.resolve(__dirname, '../../public'), path.resolve(__dirname, '../../node_modules')]
 };

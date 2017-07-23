@@ -3,6 +3,7 @@ const express = require("express");
 const path = require("path");
 var favicon = require('serve-favicon');
 const nunjucks = require("nunjucks");
+const service = require("./services");
 const route_1 = require("./route");
 const middleware_1 = require("./middleware");
 const moment = require("moment");
@@ -31,12 +32,23 @@ njk.addFilter('myFault', function (ok) {
 });
 // app.set('trust proxy', 1) // trust first proxy 
 app.use(middleware_1.Middleware.MiddlewareBuilder.buildMiddleware(middle_1.CommonMiddle))
-    .use('/node_modules', express.static(path.resolve(__dirname, '../node_modules')))
     .set('view engine', 'html')
-    .all('/', (req, res) => res.redirect('/pm/index'))
-    .use('/pm/:action', route_1.Route.RouteBuilder.buildRoute(middle_1.ProjectUserRoute))
+    .all('/', service.wechat.wechat(service.CONFIG.wechat, (req, res, next) => {
+    var parent = req.query.parent;
+    console.log(req.query);
+    var url = service.wechat.client.getAuthorizeURL(`${service.CONFIG.domain}/wechat/oauth` + (parent ? '?parent=' + parent : ''), '', 'snsapi_userinfo');
+    res.reply({ content: url, type: 'text' });
+}))
+    .use('/wechat/:action', route_1.Route.RouteBuilder.buildRoute(middle_1.WechatRoute))
     .use('/api/:action', route_1.Route.RouteBuilder.buildRoute(middle_1.ApiRoute))
-    .use('/pm-admin/:action', route_1.Route.RouteBuilder.buildRoute(middle_1.ProjectManageAdminRoute))
+    .use('/share-admin/:action', (req, res, next) => {
+    if (req.session.admin || req.baseUrl == '/share-admin/login') {
+        next();
+    }
+    else {
+        res.redirect('/share-admin/login');
+    }
+}, route_1.Route.RouteBuilder.buildRoute(middle_1.ShareAdminRoute))
     .use((err, req, res, next) => {
     // set locals, only providing error in development
     res.locals.message = err.message;
